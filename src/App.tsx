@@ -7,6 +7,13 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
+import Attendance from "./pages/Attendance";
+import Payroll from "./pages/Payroll";
+import Departments from "./pages/Departments";
+import Leaves from "./pages/Leaves";
+import MyAttendance from "./pages/MyAttendance";
+import MyPayroll from "./pages/MyPayroll";
+import MyLeaves from "./pages/MyLeaves";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +30,13 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employees" element={<Employees />} />
+          <Route path="/attendance" element={<Attendance />} />
+          <Route path="/payroll" element={<Payroll />} />
+          <Route path="/departments" element={<Departments />} />
+          <Route path="/leaves" element={<Leaves />} />
+          <Route path="/my-attendance" element={<MyAttendance />} />
+          <Route path="/my-payroll" element={<MyPayroll />} />
+          <Route path="/my-leaves" element={<MyLeaves />} />
           <Route path="/profile" element={<Profile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
