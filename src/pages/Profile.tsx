@@ -33,31 +33,31 @@ const Profile = () => {
       if (!user) return;
 
       // Load profile
-      const { data: profileData } = await supabase
-        .from("profiles" as any)
+      const profileResult = await (supabase as any)
+        .from("profiles")
         .select("*")
         .eq("id", user.id)
-        .single() as any;
+        .single();
 
-      if (profileData) {
-        setProfile(profileData);
-        setRole(profileData.role);
-        setFirstName(profileData.first_name || "");
-        setLastName(profileData.last_name || "");
-        setPhone(profileData.phone || "");
+      if (profileResult.data) {
+        setProfile(profileResult.data);
+        setRole(profileResult.data.role);
+        setFirstName(profileResult.data.first_name || "");
+        setLastName(profileResult.data.last_name || "");
+        setPhone(profileResult.data.phone || "");
 
         // Load employee data if exists
-        const { data: employeeData } = await supabase
-          .from("employees" as any)
+        const employeeResult = await (supabase as any)
+          .from("employees")
           .select(`
             *,
             departments (name)
           `)
           .eq("profile_id", user.id)
-          .single() as any;
+          .single();
 
-        if (employeeData) {
-          setEmployee(employeeData);
+        if (employeeResult.data) {
+          setEmployee(employeeResult.data);
         }
       }
     } catch (error) {
@@ -73,16 +73,16 @@ const Profile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { error } = await supabase
-        .from("profiles" as any)
+      const result = await (supabase as any)
+        .from("profiles")
         .update({
           first_name: firstName,
           last_name: lastName,
           phone: phone,
-        } as any)
+        })
         .eq("id", user.id);
 
-      if (error) throw error;
+      if (result.error) throw result.error;
 
       toast.success("Profile updated successfully!");
       loadProfile();

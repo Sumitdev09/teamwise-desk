@@ -40,22 +40,22 @@ const Employees = () => {
   const loadUserRole = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { data: profile } = await supabase
-        .from("profiles" as any)
+      const result = await (supabase as any)
+        .from("profiles")
         .select("role")
         .eq("id", user.id)
         .single();
       
-      if (profile) {
-        setRole(profile.role as "admin" | "hr" | "employee");
+      if (result.data) {
+        setRole(result.data.role as "admin" | "hr" | "employee");
       }
     }
   };
 
   const loadEmployees = async () => {
     try {
-      const { data, error } = await supabase
-        .from("employees" as any)
+      const result = await (supabase as any)
+        .from("employees")
         .select(`
           *,
           profiles (first_name, last_name, email),
@@ -63,8 +63,8 @@ const Employees = () => {
         `)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      setEmployees(data || []);
+      if (result.error) throw result.error;
+      setEmployees(result.data || []);
     } catch (error: any) {
       toast.error("Failed to load employees");
       console.error(error);

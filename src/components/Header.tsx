@@ -32,14 +32,14 @@ const Header = ({ onMenuClick, showMenuButton = false }: HeaderProps) => {
   const loadProfile = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { data } = await supabase
-        .from("profiles" as any)
+      const result = await (supabase as any)
+        .from("profiles")
         .select("*")
         .eq("id", user.id)
-        .single() as any;
+        .single();
       
-      if (data) {
-        setProfile(data);
+      if (result.data) {
+        setProfile(result.data);
       }
     }
   };

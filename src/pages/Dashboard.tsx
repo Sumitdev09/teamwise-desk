@@ -21,48 +21,48 @@ const Dashboard = () => {
   const loadUserRole = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { data: profile } = await supabase
-        .from("profiles" as any)
+      const result = await (supabase as any)
+        .from("profiles")
         .select("role")
         .eq("id", user.id)
         .single();
       
-      if (profile) {
-        setRole(profile.role as "admin" | "hr" | "employee");
+      if (result.data) {
+        setRole(result.data.role as "admin" | "hr" | "employee");
       }
     }
   };
 
   const loadStats = async () => {
     try {
-      const { count: employeeCount } = await supabase
-        .from("employees" as any)
+      const empResult = await (supabase as any)
+        .from("employees")
         .select("*", { count: "exact", head: true })
         .eq("status", "active");
 
       const today = new Date().toISOString().split("T")[0];
-      const { count: presentCount } = await supabase
-        .from("attendance" as any)
+      const attResult = await (supabase as any)
+        .from("attendance")
         .select("*", { count: "exact", head: true })
         .eq("date", today)
         .eq("status", "present");
 
-      const { count: leaveCount } = await supabase
-        .from("leave_requests" as any)
+      const leaveResult = await (supabase as any)
+        .from("leave_requests")
         .select("*", { count: "exact", head: true })
         .eq("status", "pending");
 
-      const { data: payrollData } = await supabase
-        .from("payroll" as any)
+      const payrollResult = await (supabase as any)
+        .from("payroll")
         .select("net_salary")
         .eq("status", "approved");
 
-      const totalPayroll = payrollData?.reduce((sum: number, p: any) => sum + Number(p.net_salary), 0) || 0;
+      const totalPayroll = payrollResult.data?.reduce((sum: number, p: any) => sum + Number(p.net_salary), 0) || 0;
 
       setStats({
-        totalEmployees: employeeCount || 0,
-        presentToday: presentCount || 0,
-        pendingLeaves: leaveCount || 0,
+        totalEmployees: empResult.count || 0,
+        presentToday: attResult.count || 0,
+        pendingLeaves: leaveResult.count || 0,
         totalPayroll: totalPayroll,
       });
     } catch (error) {
