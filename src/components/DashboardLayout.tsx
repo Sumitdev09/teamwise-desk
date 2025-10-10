@@ -16,6 +16,8 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
+import Header from "./Header";
+import Footer from "./Footer";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -88,24 +90,12 @@ const DashboardLayout = ({ children, role = "employee" }: DashboardLayoutProps) 
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-sidebar-background border-b border-sidebar-border">
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-2">
-            <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-semibold text-sidebar-foreground">Staff Manager</span>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-sidebar-foreground"
-          >
-            {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <Header 
+        onMenuClick={() => setSidebarOpen(!sidebarOpen)} 
+        showMenuButton={true}
+      />
 
       {/* Sidebar */}
       <aside
@@ -169,7 +159,12 @@ const DashboardLayout = ({ children, role = "employee" }: DashboardLayoutProps) 
       )}
 
       {/* Main content */}
-      <main className="lg:ml-64 p-8 pt-24 lg:pt-8">{children}</main>
+      <main className="lg:ml-64 p-8 flex-1">{children}</main>
+      
+      {/* Footer */}
+      <div className="lg:ml-64">
+        <Footer />
+      </div>
     </div>
   );
 };

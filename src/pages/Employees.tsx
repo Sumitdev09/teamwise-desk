@@ -41,7 +41,7 @@ const Employees = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data: profile } = await supabase
-        .from("profiles")
+        .from("profiles" as any)
         .select("role")
         .eq("id", user.id)
         .single();
@@ -55,7 +55,7 @@ const Employees = () => {
   const loadEmployees = async () => {
     try {
       const { data, error } = await supabase
-        .from("employees")
+        .from("employees" as any)
         .select(`
           *,
           profiles (first_name, last_name, email),

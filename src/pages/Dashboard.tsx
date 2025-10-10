@@ -22,7 +22,7 @@ const Dashboard = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data: profile } = await supabase
-        .from("profiles")
+        .from("profiles" as any)
         .select("role")
         .eq("id", user.id)
         .single();
@@ -36,28 +36,28 @@ const Dashboard = () => {
   const loadStats = async () => {
     try {
       const { count: employeeCount } = await supabase
-        .from("employees")
+        .from("employees" as any)
         .select("*", { count: "exact", head: true })
         .eq("status", "active");
 
       const today = new Date().toISOString().split("T")[0];
       const { count: presentCount } = await supabase
-        .from("attendance")
+        .from("attendance" as any)
         .select("*", { count: "exact", head: true })
         .eq("date", today)
         .eq("status", "present");
 
       const { count: leaveCount } = await supabase
-        .from("leave_requests")
+        .from("leave_requests" as any)
         .select("*", { count: "exact", head: true })
         .eq("status", "pending");
 
       const { data: payrollData } = await supabase
-        .from("payroll")
+        .from("payroll" as any)
         .select("net_salary")
         .eq("status", "approved");
 
-      const totalPayroll = payrollData?.reduce((sum, p) => sum + Number(p.net_salary), 0) || 0;
+      const totalPayroll = payrollData?.reduce((sum: number, p: any) => sum + Number(p.net_salary), 0) || 0;
 
       setStats({
         totalEmployees: employeeCount || 0,
