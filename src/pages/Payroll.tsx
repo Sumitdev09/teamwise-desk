@@ -24,14 +24,12 @@ const Payroll = () => {
   const loadUserRole = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const result = await (supabase as any)
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
+      const { data, error } = await supabase.rpc('get_user_role', { 
+        _user_id: user.id 
+      });
       
-      if (result.data) {
-        setRole(result.data.role as "admin" | "hr" | "employee");
+      if (!error && data) {
+        setRole(data as "admin" | "hr" | "employee");
       }
     }
   };
