@@ -35,3 +35,14 @@ export const supabaseQuery = {
     })
   })
 };
+
+export async function getUserRole(userId: string): Promise<string | null> {
+  const { data, error } = await supabase.rpc('get_user_role', { _user_id: userId });
+  
+  if (error) {
+    console.error("Error fetching user role:", error);
+    return null;
+  }
+  
+  return data;
+}

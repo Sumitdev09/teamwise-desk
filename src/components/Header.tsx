@@ -32,14 +32,23 @@ const Header = ({ onMenuClick, showMenuButton = false }: HeaderProps) => {
   const loadProfile = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const result = await (supabase as any)
+      // Fetch profile data
+      const profileResult = await (supabase as any)
         .from("profiles")
         .select("*")
         .eq("id", user.id)
         .single();
       
-      if (result.data) {
-        setProfile(result.data);
+      // Fetch user role from user_roles table
+      const { data: roleData } = await supabase.rpc('get_user_role', { 
+        _user_id: user.id 
+      });
+      
+      if (profileResult.data) {
+        setProfile({
+          ...profileResult.data,
+          role: roleData || 'employee'
+        });
       }
     }
   };
