@@ -11,16 +11,14 @@ import { toast } from "sonner";
 
 interface Employee {
   id: string;
-  employee_id: string;
-  designation: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  position: string | null;
   hire_date: string;
-  base_salary: number;
+  salary: number | null;
   status: string;
-  profiles: {
-    first_name: string;
-    last_name: string;
-    email: string;
-  };
   departments: {
     name: string;
   } | null;
@@ -55,8 +53,15 @@ const Employees = () => {
       const result = await (supabase as any)
         .from("employees")
         .select(`
-          *,
-          profiles (first_name, last_name, email),
+          id,
+          first_name,
+          last_name,
+          email,
+          phone,
+          position,
+          hire_date,
+          salary,
+          status,
           departments (name)
         `)
         .order("created_at", { ascending: false });
@@ -74,10 +79,10 @@ const Employees = () => {
   const filteredEmployees = employees.filter((emp) => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      emp.profiles.first_name.toLowerCase().includes(searchLower) ||
-      emp.profiles.last_name.toLowerCase().includes(searchLower) ||
-      emp.profiles.email.toLowerCase().includes(searchLower) ||
-      emp.employee_id.toLowerCase().includes(searchLower)
+      emp.first_name.toLowerCase().includes(searchLower) ||
+      emp.last_name.toLowerCase().includes(searchLower) ||
+      emp.email.toLowerCase().includes(searchLower) ||
+      (emp.position && emp.position.toLowerCase().includes(searchLower))
     );
   });
 
@@ -136,11 +141,11 @@ const Employees = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Employee ID</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Email</TableHead>
+                      <TableHead>Phone</TableHead>
                       <TableHead>Department</TableHead>
-                      <TableHead>Designation</TableHead>
+                      <TableHead>Position</TableHead>
                       <TableHead>Salary</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
@@ -155,14 +160,14 @@ const Employees = () => {
                     ) : (
                       filteredEmployees.map((emp) => (
                         <TableRow key={emp.id}>
-                          <TableCell className="font-medium">{emp.employee_id}</TableCell>
-                          <TableCell>
-                            {emp.profiles.first_name} {emp.profiles.last_name}
+                          <TableCell className="font-medium">
+                            {emp.first_name} {emp.last_name}
                           </TableCell>
-                          <TableCell>{emp.profiles.email}</TableCell>
+                          <TableCell>{emp.email}</TableCell>
+                          <TableCell>{emp.phone || "N/A"}</TableCell>
                           <TableCell>{emp.departments?.name || "N/A"}</TableCell>
-                          <TableCell>{emp.designation}</TableCell>
-                          <TableCell>${emp.base_salary.toLocaleString()}</TableCell>
+                          <TableCell>{emp.position || "N/A"}</TableCell>
+                          <TableCell>${emp.salary ? emp.salary.toLocaleString() : "N/A"}</TableCell>
                           <TableCell>
                             <Badge className={getStatusColor(emp.status)} variant="secondary">
                               {emp.status}

@@ -41,12 +41,12 @@ const Payroll = () => {
         .select(`
           *,
           employees (
-            employee_id,
-            profiles (first_name, last_name)
+            first_name,
+            last_name
           )
         `)
-        .eq("month", selectedMonth)
-        .eq("year", selectedYear);
+        .gte("period_start", `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+        .lt("period_start", `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-01`);
 
       if (result.data) {
         setPayrolls(result.data);
@@ -163,13 +163,11 @@ const Payroll = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Employee ID</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Base Salary</TableHead>
                       <TableHead>Allowances</TableHead>
                       <TableHead>Deductions</TableHead>
                       <TableHead>Net Salary</TableHead>
-                      <TableHead>Days</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
@@ -177,7 +175,7 @@ const Payroll = () => {
                   <TableBody>
                     {payrolls.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={9} className="text-center text-muted-foreground">
+                        <TableCell colSpan={7} className="text-center text-muted-foreground">
                           No payroll records found for this period
                         </TableCell>
                       </TableRow>
@@ -185,12 +183,9 @@ const Payroll = () => {
                       payrolls.map((payroll) => (
                         <TableRow key={payroll.id}>
                           <TableCell className="font-medium">
-                            {payroll.employees.employee_id}
+                            {payroll.employees.first_name} {payroll.employees.last_name}
                           </TableCell>
-                          <TableCell>
-                            {payroll.employees.profiles.first_name} {payroll.employees.profiles.last_name}
-                          </TableCell>
-                          <TableCell>${payroll.base_salary.toLocaleString()}</TableCell>
+                          <TableCell>${payroll.basic_salary.toLocaleString()}</TableCell>
                           <TableCell className="text-success">
                             +${payroll.allowances.toLocaleString()}
                           </TableCell>
@@ -199,9 +194,6 @@ const Payroll = () => {
                           </TableCell>
                           <TableCell className="font-bold">
                             ${payroll.net_salary.toLocaleString()}
-                          </TableCell>
-                          <TableCell>
-                            {payroll.present_days}/{payroll.working_days}
                           </TableCell>
                           <TableCell>{getStatusBadge(payroll.status)}</TableCell>
                           <TableCell>

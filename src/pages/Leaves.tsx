@@ -41,8 +41,8 @@ const Leaves = () => {
         .select(`
           *,
           employees (
-            employee_id,
-            profiles (first_name, last_name)
+            first_name,
+            last_name
           ),
           reviewed_by:profiles!leave_requests_reviewed_by_fkey (first_name, last_name)
         `)
@@ -148,7 +148,7 @@ const Leaves = () => {
                       leaves.map((leave) => (
                         <TableRow key={leave.id}>
                           <TableCell className="font-medium">
-                            {leave.employees.profiles.first_name} {leave.employees.profiles.last_name}
+                            {leave.employees.first_name} {leave.employees.last_name}
                           </TableCell>
                           <TableCell>{getLeaveTypeBadge(leave.leave_type)}</TableCell>
                           <TableCell>{format(new Date(leave.start_date), "MMM d, yyyy")}</TableCell>

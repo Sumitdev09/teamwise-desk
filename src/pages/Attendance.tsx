@@ -43,8 +43,10 @@ const Attendance = () => {
     const result = await (supabase as any)
       .from("employees")
       .select(`
-        *,
-        profiles (first_name, last_name)
+        id,
+        first_name,
+        last_name,
+        status
       `)
       .eq("status", "active");
     
@@ -61,8 +63,8 @@ const Attendance = () => {
         .select(`
           *,
           employees (
-            employee_id,
-            profiles (first_name, last_name)
+            first_name,
+            last_name
           )
         `)
         .eq("date", dateStr);
@@ -171,7 +173,6 @@ const Attendance = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Employee ID</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Check In</TableHead>
@@ -182,7 +183,7 @@ const Attendance = () => {
                   <TableBody>
                     {employees.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center text-muted-foreground">
+                        <TableCell colSpan={5} className="text-center text-muted-foreground">
                           No employees found
                         </TableCell>
                       </TableRow>
@@ -193,9 +194,8 @@ const Attendance = () => {
                         
                         return (
                           <TableRow key={emp.id}>
-                            <TableCell className="font-medium">{emp.employee_id}</TableCell>
-                            <TableCell>
-                              {emp.profiles.first_name} {emp.profiles.last_name}
+                            <TableCell className="font-medium">
+                              {emp.first_name} {emp.last_name}
                             </TableCell>
                             <TableCell>{getStatusBadge(status)}</TableCell>
                             <TableCell>{record?.check_in_time || "-"}</TableCell>
