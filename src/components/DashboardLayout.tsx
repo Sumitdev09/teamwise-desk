@@ -29,7 +29,7 @@ const DashboardLayout = ({ children, role = "employee" }: DashboardLayoutProps) 
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -108,8 +108,9 @@ const DashboardLayout = ({ children, role = "employee" }: DashboardLayoutProps) 
           "fixed top-16 left-0 z-40 h-[calc(100vh-4rem)] w-72 transition-all duration-300 ease-in-out",
           "bg-gradient-to-b from-card via-card to-card/95",
           "border-r border-border shadow-lg",
-          "lg:translate-x-0",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          "translate-x-0 lg:translate-x-0",
+          "max-lg:hidden max-lg:translate-x-full",
+          sidebarOpen && "max-lg:block max-lg:translate-x-0"
         )}
       >
         <div className="flex flex-col h-full">
