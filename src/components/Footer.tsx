@@ -66,7 +66,10 @@ const Footer = () => {
         <Separator className="my-6" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© {currentYear} StaffSync. All rights reserved.</p>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p>© {currentYear} StaffSync. All rights reserved.</p>
+            <p className="text-xs">Design and developers Sumit Yadav</p>
+          </div>
           <div className="flex gap-6">
             <span className="hover:text-primary cursor-pointer transition-colors">Privacy</span>
             <span className="hover:text-primary cursor-pointer transition-colors">Terms</span>
