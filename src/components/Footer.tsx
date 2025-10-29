@@ -14,7 +14,7 @@ const Footer = () => {
               <div className="bg-primary p-2 rounded-lg">
                 <Building2 className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="font-bold text-lg">Staff Manager</span>
+              <span className="font-bold text-lg">StaffSync</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Complete employee management solution for modern organizations.
@@ -66,7 +66,7 @@ const Footer = () => {
         <Separator className="my-6" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© {currentYear} Staff Manager. All rights reserved.</p>
+          <p>© {currentYear} StaffSync. All rights reserved.</p>
           <div className="flex gap-6">
             <span className="hover:text-primary cursor-pointer transition-colors">Privacy</span>
             <span className="hover:text-primary cursor-pointer transition-colors">Terms</span>

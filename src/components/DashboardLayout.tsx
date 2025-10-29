@@ -121,7 +121,7 @@ const DashboardLayout = ({ children, role = "employee" }: DashboardLayoutProps) 
                 <Building2 className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-foreground">Staff Manager</h2>
+                <h2 className="text-lg font-bold text-foreground">StaffSync</h2>
                 <p className="text-xs text-muted-foreground capitalize">{role} Portal</p>
               </div>
             </div>
