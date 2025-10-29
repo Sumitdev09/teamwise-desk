@@ -24,6 +24,8 @@ const Auth = () => {
   const [registerPassword, setRegisterPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [loginRole, setLoginRole] = useState<string>("employee");
+  const [registerRole, setRegisterRole] = useState<string>("employee");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +60,7 @@ const Auth = () => {
           data: {
             first_name: firstName,
             last_name: lastName,
+            role: registerRole,
           },
           emailRedirectTo: `${window.location.origin}/dashboard`,
         },
@@ -97,6 +100,18 @@ const Auth = () => {
 
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="loginRole">Login As</Label>
+                  <Select value={loginRole} onValueChange={setLoginRole}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="employee">Employee</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -145,6 +160,18 @@ const Auth = () => {
                       required
                     />
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="registerRole">Register As</Label>
+                  <Select value={registerRole} onValueChange={setRegisterRole}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="employee">Employee</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="registerEmail">Email</Label>
